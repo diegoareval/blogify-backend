@@ -34,10 +34,6 @@ const redisClient = redisConnection(redis, config).createRedisClient();
 // routes for each endpoint
 routes(app, express, redisClient);
 
-app.get('/health', function(req, res) {
-  res.send('hello world');
-});
-
 
 // error handling middleware
 app.use(errorHandlingMiddleware);
