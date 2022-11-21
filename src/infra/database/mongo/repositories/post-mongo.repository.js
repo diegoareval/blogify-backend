@@ -12,9 +12,7 @@ export default function postRepositoryMongoDB() {
       .skip(params.perPage * params.page - params.perPage)
       .limit(params.perPage);
 
-  const countAll = (params) =>
-    PostModel.countDocuments(omit(params, 'page', 'perPage'));
-
+  const countAll = (params) => PostModel.countDocuments(omit(params, 'page', 'perPage'));
 
   return {
     findAll,

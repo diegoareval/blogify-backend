@@ -28,7 +28,7 @@ export default function postController(
     // and current logged in user
     params.page = params.page ? parseInt(params.page, 10) : 1;
     params.perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
-    params.userId = req.user.id;
+    params.userId = req.user && req.user.id || "unknown";
 
     findAll(params, dbRepository)
       .then((posts) => {
