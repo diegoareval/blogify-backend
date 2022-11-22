@@ -1,6 +1,9 @@
 import findAll from '../../application/use_cases/post/findAll';
 import countAll from '../../application/use_cases/post/countAll';
 import findById from '../../application/use_cases/post/findById';
+import addPost from '../../application/use_cases/post/add';
+import updateById from '../../application/use_cases/post/updateById';
+import deletePost from '../../application/use_cases/post/deleteΒyId';
 
 export default function postController(
   postDbRepository,
@@ -63,10 +66,56 @@ export default function postController(
       .catch((error) => next(error));
   };
 
+  const deletePostById = (req, res, next) => {
+    deletePost(req.params.id, dbRepository)
+      .then(() => res.json('post sucessfully deleted!'))
+      .catch((error) => next(error));
+  };
+
+  const updatePostById = (req, res, next) => {
+    const { title, body } = req.body;
+
+    // check
+    updateById({
+      id: req.params.id,
+      title,
+      body,
+      userId: req.user.id,
+      postRepository: dbRepository
+    })
+      .then((message) => res.json(message))
+      .catch((error) => next(error));
+  };
+
+  const addNewPost = (req, res, next) => {
+    const { title, body } = req.body;
+
+    addPost({
+      title,
+      body,
+      userId: req.user.id,
+      postRepository: dbRepository
+    })
+      .then((post) => {
+        const cachingOptions = {
+          key: 'posts_',
+          expireTimeSec: 30,
+          data: JSON.stringify(post)
+        };
+        // cache the result to redis
+        cachingRepository.setCache(cachingOptions);
+        return res.json('post added');
+      })
+      .catch((error) => next(error));
+  };
+
 
 
   return {
     fetchAllPosts,
-    fetchPostById
+    fetchPostById,
+    deletePostById,
+    updatePostById,
+    addNewPost
   };
 }

@@ -16,9 +16,38 @@ export default function postRepositoryMongoDB() {
 
   const findById = (id) => PostModel.findById(id);
 
+  const add = (postEntity) => {
+    const newPost = new PostModel({
+      title: postEntity.getTitle(),
+      body: postEntity.getBody(),
+      createdAt: new Date(),
+      userId: postEntity.getUserId()
+    });
+
+    return newPost.save();
+  };
+
+  const updateById = (id, postEntity) => {
+    const updatedPost = {
+      title: postEntity.getTitle(),
+      body: postEntity.getBody()
+    };
+
+    return PostModel.findOneAndUpdate(
+      { _id: id },
+      { $set: updatedPost },
+      { new: true }
+    );
+  };
+
+  const deleteById = (id) => PostModel.findByIdAndRemove(id);
+
   return {
     findAll,
     countAll,
-    findById
+    findById,
+    deleteById,
+    add,
+    updateById,
   };
 }

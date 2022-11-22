@@ -35,6 +35,15 @@ export default function postRouter(express, redisClient) {
       controller.fetchPostById
     );
 
+  // POST endpoints
+  router.route('/').post(authMiddleware, controller.addNewPost);
+
+  // PUT endpoints
+  router.route('/:id').put(authMiddleware, controller.updatePostById);
+
+  // DELETE endpoints
+  router.route('/:id').delete(authMiddleware, controller.deletePostById);
+
 
   return router;
 }
