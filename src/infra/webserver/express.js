@@ -1,21 +1,22 @@
 import morgan from 'morgan';
 import compression from 'compression';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import helmet from 'helmet';
+import express from 'express';
 
 export default function expressConfig(app) {
   // security middleware
   app.use(helmet());
 
   app.use(compression());
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(
-    bodyParser.urlencoded({
-      limit: '50mb',
-      extended: true,
-      parameterLimit: 50000
-    })
-  );
+  app.use(express.json());
+  // app.use(
+  //   bodyParser.urlencoded({
+  //     limit: '50mb',
+  //     extended: true,
+  //     parameterLimit: 50000
+  //   })
+  // );
 
   app.use((req, res, next) => {
     // Website you wish to allow to connect

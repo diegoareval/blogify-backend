@@ -1,5 +1,6 @@
 import findAll from '../../application/use_cases/post/findAll';
 import countAll from '../../application/use_cases/post/countAll';
+import findById from '../../application/use_cases/post/findById';
 
 export default function postController(
   postDbRepository,
@@ -51,9 +52,21 @@ export default function postController(
       .catch((error) => next(error));
   };
 
+  const fetchPostById = (req, res, next) => {
+    findById(req.params.id, dbRepository)
+      .then((post) => {
+        if (!post) {
+          throw new Error(`No post found with id: ${req.params.id}`);
+        }
+        res.json(post);
+      })
+      .catch((error) => next(error));
+  };
+
 
 
   return {
-    fetchAllPosts
+    fetchAllPosts,
+    fetchPostById
   };
 }

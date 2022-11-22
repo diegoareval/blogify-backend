@@ -14,8 +14,11 @@ export default function postRepositoryMongoDB() {
 
   const countAll = (params) => PostModel.countDocuments(omit(params, 'page', 'perPage'));
 
+  const findById = (id) => PostModel.findById(id);
+
   return {
     findAll,
-    countAll
+    countAll,
+    findById
   };
 }

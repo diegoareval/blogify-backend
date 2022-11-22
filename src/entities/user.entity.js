@@ -1,5 +1,6 @@
-export default function user({
+export default function user(
                               username,
+                              password,
                               name,
                               email,
                               profile,
@@ -7,10 +8,11 @@ export default function user({
                              role,
                               photo,
                               createdAt
-                            }) {
+                            ) {
   return {
     getName: () => name,
-    getUsername: () => username,
+    getUserName: () => username,
+    getPassword: () => password,
     getEmail: ()=> email,
     getProfile: () => profile,
     getAbout: () => about,

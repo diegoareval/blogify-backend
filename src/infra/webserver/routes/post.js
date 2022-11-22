@@ -28,6 +28,13 @@ export default function postRouter(express, redisClient) {
       controller.fetchAllPosts
     );
 
+  router
+    .route('/:id')
+    .get(
+      [authMiddleware, redisCachingMiddleware(redisClient, 'post')],
+      controller.fetchPostById
+    );
+
 
   return router;
 }
